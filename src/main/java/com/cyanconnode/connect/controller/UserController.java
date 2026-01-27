@@ -1,8 +1,7 @@
 package com.cyanconnode.connect.controller;
 
-import com.cyanconnode.connect.dto.UserDto;
+import com.cyanconnode.connect.entity.Users;
 import com.cyanconnode.connect.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +17,8 @@ public class UserController
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> createUser(HttpServletRequest request, @RequestBody UserDto userDto)
+    public ResponseEntity<?> createUser(@RequestBody Users user)
     {
-        if (userDto == null)
-        {
-            return ResponseEntity.status(401).body("Request body cannot be null");
-        }
-
-        return userService.createUser(userDto);
+        return userService.createUser(user);
     }
 }
