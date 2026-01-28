@@ -23,5 +23,4 @@ public interface UserRepository extends JpaRepository<Users, Long>
             @Param("userName") String userName,
             @Param("phoneNo") String phoneNo
     );
-
 }

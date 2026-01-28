@@ -53,5 +53,4 @@ public class UserService
 
         return ResponseEntity.ok("User Details Save Successfully");
     }
-
 }

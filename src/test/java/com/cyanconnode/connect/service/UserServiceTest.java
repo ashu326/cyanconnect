@@ -56,6 +56,4 @@ class UserServiceTest
         assertEquals(409, response.getStatusCode().value());
     }
 
-
-
 }
