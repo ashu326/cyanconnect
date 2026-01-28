@@ -1,12 +1,13 @@
 package com.cyanconnode.connect.service;
 
+import com.cyanconnode.connect.dto.UserDto;
 import com.cyanconnode.connect.entity.Users;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -17,27 +18,45 @@ class UserServiceTest
     private UserService userService;
 
     @Test
-    void createUser_test()
+    void validDto_Should_Create_User_Successfully()
     {
-        Users user = new Users();
-        user.setUserName("saurabh123");
-        user.setName("saurabh");
-        user.setEmail("saurabh@gmail.com");
-        user.setPhoneNo(965454855L);
-        user.setPassword("12345");
+        UserDto userDetails = new UserDto();
+        userDetails.setUserName("saurabh123");
+        userDetails.setName("saurabh");
+        userDetails.setEmail("saurabh@gmail.com");
+        userDetails.setPhoneNo(965454855L);
+        userDetails.setPassword("12345");
 
-        ResponseEntity<?> saved = userService.createUser(user);
+        ResponseEntity<?> saved = userService.createUser(userDetails);
 
         assertNotNull(saved);
     }
 
-
     @Test
-    void createUser_nullDto()
+    void duplicateEmail_Should_Return_Conflict()
     {
-        assertThrows(RuntimeException.class,
-                () -> userService.createUser(null));
+        UserDto firstUser = new UserDto();
+        firstUser.setName("user1");
+        firstUser.setUserName("user1");
+        firstUser.setEmail("dup@gmail.com");
+        firstUser.setPhoneNo(9999999991L);
+        firstUser.setPassword("12345");
+
+        userService.createUser(firstUser);
+
+        UserDto duplicateUser = new UserDto();
+        duplicateUser.setName("user2");
+        duplicateUser.setUserName("user2");
+        duplicateUser.setEmail("dup@gmail.com");
+        duplicateUser.setPhoneNo(9999999992L);
+        duplicateUser.setPassword("12345");
+
+        ResponseEntity<String> response =
+                userService.createUser(duplicateUser);
+
+        assertEquals(409, response.getStatusCode().value());
     }
+
 
 
 }

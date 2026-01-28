@@ -20,7 +20,7 @@ class UserControllerTest
     private MockMvc mockMvc;
 
     @Test
-    void createUser_ok() throws Exception
+    void validData_Should_Successfully_Create_User() throws Exception
     {
         mockMvc.perform(post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -37,7 +37,7 @@ class UserControllerTest
     }
 
     @Test
-    void createUser_success() throws Exception
+    void missingEmail_Should_Return_BadRequest() throws Exception
     {
         String unique = "user" + System.currentTimeMillis();
         String uniqueEmail = unique + "@gmail.com";
