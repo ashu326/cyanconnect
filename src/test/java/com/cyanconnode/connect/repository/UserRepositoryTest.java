@@ -22,7 +22,7 @@ class UserRepositoryTest {
         user.setUserName("saurabh123");
         user.setName("saurabh");
         user.setEmail("saurabh@gmail.com");
-        user.setPhoneNo(965454855L);
+        user.setPhoneNo("965454855");
         user.setPassword("12345");
 
         userRepository.save(user);

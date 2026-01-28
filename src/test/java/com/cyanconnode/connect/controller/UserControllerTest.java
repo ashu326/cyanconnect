@@ -56,4 +56,71 @@ class UserControllerTest
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void invalidEmail_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                        {
+                          "name":"test",
+                          "userName":"test123",
+                          "email":"invalid-email",
+                          "phoneNo":"9876543210",
+                          "password":"test123"
+                        }
+                        """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void blankName_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                        {
+                          "name":"",
+                          "userName":"test123",
+                          "email":"test@gmail.com",
+                          "phoneNo":"9876543210",
+                          "password":"test123"
+                        }
+                        """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void invalidPhoneNumber_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                        {
+                          "name":"test",
+                          "userName":"test123",
+                          "email":"test@gmail.com",
+                          "phoneNo":"12345",
+                          "password":"test123"
+                        }
+                        """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void blankPassword_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                        {
+                          "name":"test",
+                          "userName":"test123",
+                          "email":"test@gmail.com",
+                          "phoneNo":"9876543210",
+                          "password":""
+                        }
+                        """))
+                .andExpect(status().isBadRequest());
+    }
 }

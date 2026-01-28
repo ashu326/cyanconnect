@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<Users, Long>
     Optional<Users> getUserDetails(
             @Param("email") String email,
             @Param("userName") String userName,
-            @Param("phoneNo") Long phoneNo
+            @Param("phoneNo") String phoneNo
     );
 
 }

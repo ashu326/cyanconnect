@@ -1,7 +1,6 @@
 package com.cyanconnode.connect.service;
 
 import com.cyanconnode.connect.dto.UserDto;
-import com.cyanconnode.connect.entity.Users;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +23,7 @@ class UserServiceTest
         userDetails.setUserName("saurabh123");
         userDetails.setName("saurabh");
         userDetails.setEmail("saurabh@gmail.com");
-        userDetails.setPhoneNo(965454855L);
+        userDetails.setPhoneNo("965454855");
         userDetails.setPassword("12345");
 
         ResponseEntity<?> saved = userService.createUser(userDetails);
@@ -39,7 +38,7 @@ class UserServiceTest
         firstUser.setName("user1");
         firstUser.setUserName("user1");
         firstUser.setEmail("dup@gmail.com");
-        firstUser.setPhoneNo(9999999991L);
+        firstUser.setPhoneNo("9999999991");
         firstUser.setPassword("12345");
 
         userService.createUser(firstUser);
@@ -48,7 +47,7 @@ class UserServiceTest
         duplicateUser.setName("user2");
         duplicateUser.setUserName("user2");
         duplicateUser.setEmail("dup@gmail.com");
-        duplicateUser.setPhoneNo(9999999992L);
+        duplicateUser.setPhoneNo("9999999992");
         duplicateUser.setPassword("12345");
 
         ResponseEntity<String> response =

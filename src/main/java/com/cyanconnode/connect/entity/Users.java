@@ -28,7 +28,7 @@ public class Users
     private String email;
 
     @Column(name = "phone_no",nullable = false,unique = true)
-    private  Long phoneNo;
+    private  String phoneNo;
 
     @Column(name = "user_name",nullable = false,unique = true)
     private String userName;
