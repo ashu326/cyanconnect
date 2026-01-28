@@ -1,5 +1,6 @@
 package com.cyanconnode.connect.service;
 
+import com.cyanconnode.connect.dto.UserDto;
 import com.cyanconnode.connect.entity.Users;
 import com.cyanconnode.connect.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,55 +17,41 @@ public class UserService
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<?> createUser(Users user)
+    public ResponseEntity<String> createUser(UserDto userDto)
     {
-        if (user.getEmail() == null || user.getEmail().isBlank())
-        {
-            return ResponseEntity.badRequest().body("Email cannot be null");
-        }
 
-        if (user.getUserName() == null || user.getUserName().isBlank())
-        {
-            return ResponseEntity.badRequest().body("Username cannot be null");
-        }
-
-        if (user.getPhoneNo() == null)
-        {
-            return ResponseEntity.badRequest().body("Phone number cannot be null");
-        }
-
-        if (user.getPassword() == null || user.getPassword().isBlank())
-        {
-            return ResponseEntity.badRequest().body("Password cannot be blank");
-        }
-
-        Optional<Users> existingUser = userRepository.findExistingUser(user.getEmail(),
-                user.getUserName(), user.getPhoneNo());
+        Optional<Users> existingUser = userRepository.getUserDetails(userDto.getEmail(),
+                userDto.getUserName(), userDto.getPhoneNo());
 
         if (existingUser.isPresent())
         {
             Users existDetails = existingUser.get();
 
-            if (existDetails.getEmail().equals(user.getEmail()))
+            if (existDetails.getEmail().equals(userDto.getEmail()))
             {
                 return ResponseEntity.status(409).body("Email already exists");
             }
 
-            if (existDetails.getUserName().equals(user.getUserName()))
+            if (existDetails.getUserName().equals(userDto.getUserName()))
             {
                 return ResponseEntity.status(409).body("Username already exists");
             }
 
-            if (existDetails.getPhoneNo().equals(user.getPhoneNo()))
+            if (existDetails.getPhoneNo().equals(userDto.getPhoneNo()))
             {
                 return ResponseEntity.status(409).body("Phone number already exists");
             }
         }
 
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
+        Users userDetails = new Users();
+        userDetails.setUserName(userDto.getUserName());
+        userDetails.setEmail(userDto.getEmail());
+        userDetails.setName(userDto.getName());
+        userDetails.setPhoneNo(userDto.getPhoneNo());
+        userDetails.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(userDetails);
 
-            return ResponseEntity.ok("User Details Save Successfully");
+        return ResponseEntity.ok("User Details Save Successfully");
     }
 
 }
