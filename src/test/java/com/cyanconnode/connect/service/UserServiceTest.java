@@ -3,7 +3,6 @@ package com.cyanconnode.connect.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,11 +14,10 @@ public class UserServiceTest
     private UserService userService;
 
     @Test
-    public void getUsers()
+    public void getUsers_Using_Offset_And_Limit()
     {
-        Pageable pageable = org.springframework.data.domain.PageRequest.of(0, 5);
 
-        ResponseEntity<?> user = userService.getUsers(pageable);
+        ResponseEntity<?> user = userService.getUsers(0, 10);
         assertNotNull(user);
     }
 }

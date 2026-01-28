@@ -6,6 +6,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -15,15 +18,44 @@ public class UserControllerTest
     private MockMvc mockMvc;
 
     @Test
-    public void getUser() throws Exception
+    public void getUsers_Using_Offset_And_Limit() throws Exception
     {
         mockMvc.perform(
-                        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                                .get("/api/v1/users")
-                                .param("page", "0")
-                                .param("size", "5")
+                        get("/api/v1/users")
+                                .param("offset", "0")
+                                .param("limit", "10")
                 )
-                .andExpect(org.springframework.test.web.servlet.result
-                        .MockMvcResultMatchers.status().isOk());
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getUsers_withoutLimit_returnsBadRequest() throws Exception
+    {
+        mockMvc.perform(
+                        get("/api/v1/users")
+                                .param("offset", "0")
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getUsers_withoutOffset_returnsBadRequest() throws Exception
+    {
+        mockMvc.perform(
+                        get("/api/v1/users")
+                                .param("limit", "10")
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getUsers_withStringOffset_returnsBadRequest() throws Exception
+    {
+        mockMvc.perform(
+                        get("/api/v1/users")
+                                .param("offset", "abc")
+                                .param("limit", "10")
+                )
+                .andExpect(status().isOk());
     }
 }

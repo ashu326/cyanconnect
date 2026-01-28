@@ -20,26 +20,24 @@ public class UserService
     private final UserMapper userMapper;
 
 
-    public ResponseEntity<?> getUsers(Pageable pageable)
+    public ResponseEntity<?> getUsers(int offset, int limit)
     {
-        Page<Users> users = userRepository.findAll(pageable);
+        List<Users> users = userRepository.findAllWithOffsetLimit(offset, limit);
 
         if (users.isEmpty())
         {
             return ResponseEntity.ok("No Users found");
         }
 
-        List<UserDto> userDtoList = users.getContent()
-                .stream()
+        List<UserDto> userDtoList = users.stream()
                 .map(userMapper::toDto)
                 .toList();
 
         return ResponseEntity.ok(Map.of(
-                "totalElements", users.getTotalElements(),
-                "totalPages", users.getTotalPages(),
-                "page", users.getNumber(),
-                "size", users.getSize(),
-                "records", userDtoList
+                "offset", offset,
+                "limit", limit,
+                "usersCount", userRepository.count(),
+                "users", userDtoList
         ));
     }
 }
