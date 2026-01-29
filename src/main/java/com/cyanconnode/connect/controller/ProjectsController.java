@@ -1,0 +1,25 @@
+package com.cyanconnode.connect.controller;
+
+import com.cyanconnode.connect.dto.ProjectsDto;
+import com.cyanconnode.connect.service.ProjectsService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("api/v1/projects")
+@RequiredArgsConstructor
+public class ProjectsController
+{
+    private final ProjectsService projectsService;
+
+    @PostMapping
+    public ResponseEntity<String> addProject(@Valid @RequestBody ProjectsDto projectsDto)
+    {
+        return projectsService.addProject(projectsDto);
+    }
+}
