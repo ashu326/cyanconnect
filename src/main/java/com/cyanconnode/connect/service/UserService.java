@@ -38,4 +38,28 @@ public class UserService
                 "users", userDtoList
         ));
     }
+
+    //Get Users By Name
+    public ResponseEntity<?> searchUsersByName(String name, int offset, int limit)
+    {
+
+        List<Users> users = userRepository.findUsersByName(name, offset, limit);
+
+        if (users.isEmpty())
+        {
+            return ResponseEntity.ok("No Users found with name: " + name);
+        }
+
+        List<UserDto> userDtoList = users.stream()
+                .map(userMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(Map.of(
+                "offset", offset,
+                "limit", limit,
+                "usersCount", userDtoList.size(),
+                "users", userDtoList
+        ));
+    }
+
 }

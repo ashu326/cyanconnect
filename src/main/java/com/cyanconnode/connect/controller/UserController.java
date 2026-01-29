@@ -22,4 +22,12 @@ public class UserController
     {
         return userService.getUsers(offset, limit);
     }
+
+    //Get User By Name
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsersByName(@RequestParam String name, @RequestParam int offset, @RequestParam int limit)
+    {
+        return userService.searchUsersByName(name, offset, limit);
+    }
+
 }
