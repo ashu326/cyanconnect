@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class UserDto
 {
+    private Long userId;
+
     @NotBlank(message = "Name cannot be blank")
     private String name;
 
