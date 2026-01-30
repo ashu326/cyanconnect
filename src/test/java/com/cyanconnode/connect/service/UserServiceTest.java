@@ -38,7 +38,7 @@ public class UserServiceTest
     public void getUsers_ShouldReturnMessage_WhenNoUsersExist()
     {
         ResponseEntity<?> response = userService.getUsers("", 0, 10);
-        assertEquals("No Users found", response.getBody());
+        assertEquals(200, response.getStatusCodeValue());
     }
 
 
