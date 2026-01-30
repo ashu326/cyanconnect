@@ -12,19 +12,12 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<Users, Long>
 {
     //Get All Users
-    @Query(value = "SELECT * FROM users " +
-            "ORDER BY id" +
-            " LIMIT :limit OFFSET :offset",
-            nativeQuery = true)
-    List<Users> findAllWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
-
-    //Get Users By Name
     @Query(value = """
-        SELECT * FROM users
-        WHERE (name) LIKE (CONCAT('%', :name, '%'))
-        ORDER BY id
-        LIMIT :limit OFFSET :offset
-        """, nativeQuery = true)
-    List<Users> findUsersByName(@Param("name") String name, @Param("offset") int offset, @Param("limit") int limit);
+    SELECT * FROM users
+    WHERE (:name IS NULL OR name LIKE CONCAT('%', :name, '%'))
+    ORDER BY id
+    LIMIT :limit OFFSET :offset
+    """, nativeQuery = true)
+    List<Users> getUsersQuery(@Param("name") String name, @Param("offset") int offset, @Param("limit") int limit);
 
 }

@@ -18,16 +18,12 @@ public class UserController
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<?> getUsers(@RequestParam int offset, @RequestParam int limit)
+    public ResponseEntity<Object> getUsers(@RequestParam(defaultValue = "0") int offset,
+                                           @RequestParam(defaultValue = "10") int limit,
+                                           @RequestParam(required = false) String name)
     {
-        return userService.getUsers(offset, limit);
+        return userService.getUsers(name, offset, limit);
     }
 
-    //Get User By Name
-    @GetMapping("/search")
-    public ResponseEntity<?> searchUsersByName(@RequestParam String name, @RequestParam int offset, @RequestParam int limit)
-    {
-        return userService.searchUsersByName(name, offset, limit);
-    }
 
 }

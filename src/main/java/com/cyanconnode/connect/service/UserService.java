@@ -1,8 +1,7 @@
 package com.cyanconnode.connect.service;
 
-import com.cyanconnode.connect.dto.UserDto;
+import com.cyanconnode.connect.dto.UserResponseDto;
 import com.cyanconnode.connect.entity.Users;
-import com.cyanconnode.connect.mapper.UserMapper;
 import com.cyanconnode.connect.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,50 +14,33 @@ import java.util.Map;
 public class UserService
 {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
-
-    public ResponseEntity<?> getUsers(int offset, int limit)
+    public ResponseEntity<Object> getUsers(String name, int offset, int limit)
     {
-        List<Users> users = userRepository.findAllWithOffsetLimit(offset, limit);
+        List<Users> users = userRepository.getUsersQuery(name, offset, limit);
 
         if (users.isEmpty())
         {
-            return ResponseEntity.ok("No Users found");
+            return ResponseEntity.ok(Map.of(
+                    "usersCount", 0,
+                    "users", List.of()
+            ));
         }
 
-        List<UserDto> userDtoList = users.stream()
-                .map(userMapper::toDto)
+        List<UserResponseDto> responseList = users.stream()
+                .map(user -> UserResponseDto.builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .username(user.getUserName())
+                        .build())
                 .toList();
 
         return ResponseEntity.ok(Map.of(
                 "offset", offset,
                 "limit", limit,
                 "usersCount", userRepository.count(),
-                "users", userDtoList
-        ));
-    }
-
-    //Get Users By Name
-    public ResponseEntity<?> searchUsersByName(String name, int offset, int limit)
-    {
-
-        List<Users> users = userRepository.findUsersByName(name, offset, limit);
-
-        if (users.isEmpty())
-        {
-            return ResponseEntity.ok("No Users found with name: " + name);
-        }
-
-        List<UserDto> userDtoList = users.stream()
-                .map(userMapper::toDto)
-                .toList();
-
-        return ResponseEntity.ok(Map.of(
-                "offset", offset,
-                "limit", limit,
-                "usersCount", userDtoList.size(),
-                "users", userDtoList
+                "users", responseList
         ));
     }
 
