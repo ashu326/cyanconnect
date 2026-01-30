@@ -25,8 +25,8 @@ public class ProjectsService
         }
 
         Projects projectDetails = new Projects();
-        projectDetails.setProjectName(projectsDto.getProjectName().toLowerCase());
-        projectDetails.setSiteAddressId(projectsDto.getSiteAddressId().toLowerCase());
+        projectDetails.setProjectName(projectsDto.getProjectName());
+        projectDetails.setSiteAddressId(projectsDto.getSiteAddressId());
 
         projectsRepository.save(projectDetails);
         return ResponseEntity.ok("Project Details Saved Successfully");

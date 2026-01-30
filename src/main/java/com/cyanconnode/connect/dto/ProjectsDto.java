@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 public class ProjectsDto
 {
-    private int id;
-
     @NotBlank(message = "ProjectName cannot be blank")
     private String projectName;
 
