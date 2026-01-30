@@ -3,7 +3,6 @@ package com.cyanconnode.connect.service;
 import com.cyanconnode.connect.dto.UserDto;
 import com.cyanconnode.connect.entity.Users;
 import com.cyanconnode.connect.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +17,7 @@ public class UserService
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<String> createUser(@Valid UserDto userDto)
+    public ResponseEntity<String> createUser(UserDto userDto)
     {
 
         Optional<Users> existingUser = userRepository.getUserDetails(userDto.getEmail(),
@@ -45,11 +44,11 @@ public class UserService
         }
 
         Users userDetails = new Users();
-        userDetails.setUserName(userDto.getUserName().toLowerCase());
-        userDetails.setEmail(userDto.getEmail().toLowerCase());
-        userDetails.setName(userDto.getName().toLowerCase());
+        userDetails.setUserName(userDto.getUserName());
+        userDetails.setEmail(userDto.getEmail());
+        userDetails.setName(userDto.getName());
         userDetails.setPhoneNo(userDto.getPhoneNo());
-        userDetails.setPassword(passwordEncoder.encode(userDto.getPassword().toLowerCase()));
+        userDetails.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(userDetails);
 
         return ResponseEntity.ok("User Details Save Successfully");
