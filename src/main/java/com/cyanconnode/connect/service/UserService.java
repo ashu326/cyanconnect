@@ -2,6 +2,7 @@ package com.cyanconnode.connect.service;
 
 import com.cyanconnode.connect.dto.UserDto;
 import com.cyanconnode.connect.entity.Users;
+import com.cyanconnode.connect.exception.ConflictException;
 import com.cyanconnode.connect.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,17 +33,17 @@ public class UserService
 
             if (existDetails.getEmail().equals(userDto.getEmail()))
             {
-                return ResponseEntity.status(409).body("Email already exists");
+                throw new ConflictException("Email already exists");
             }
 
             if (existDetails.getUserName().equals(userDto.getUserName()))
             {
-                return ResponseEntity.status(409).body("Username already exists");
+                throw new ConflictException("Username already exists");
             }
 
             if (existDetails.getPhoneNo().equals(userDto.getPhoneNo()))
             {
-                return ResponseEntity.status(409).body("Phone number already exists");
+                throw new ConflictException("Phone number already exists");
             }
         }
 
