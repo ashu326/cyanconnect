@@ -26,3 +26,4 @@ public class SecurityConfig
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();
     }
 }
+

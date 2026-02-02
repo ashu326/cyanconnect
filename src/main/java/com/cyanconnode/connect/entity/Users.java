@@ -13,7 +13,8 @@ public class Users
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private Long userId;
 
     @Column(name = "name",nullable = false)
     private String name;
@@ -22,12 +23,11 @@ public class Users
     private String email;
 
     @Column(name = "phone_no",nullable = false,unique = true)
-    private String phoneNo;
+    private  String phoneNo;
 
     @Column(name = "user_name",nullable = false,unique = true)
     private String userName;
 
     @Column(name = "password",nullable = false)
-    private String password;
-
+    private  String password;
 }

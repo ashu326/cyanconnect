@@ -7,10 +7,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long>
 {
+
+    Users findByUserName(String userName);
+
+    @Query(""" 
+            SELECT u FROM Users u WHERE u.email = :email 
+            OR u.userName = :userName OR u.phoneNo = :phoneNo 
+            """)
+    Optional<Users> getUserDetails(
+            @Param("email") String email,
+            @Param("userName") String userName,
+            @Param("phoneNo") String phoneNo
+    );
     //Get All Users
     @Query(value = """
     SELECT * FROM users
