@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<Users, Long>
     @Query(value = """
     SELECT * FROM users
     WHERE (:name IS NULL OR name LIKE CONCAT('%', :name, '%'))
-    ORDER BY id
+    ORDER BY name
     LIMIT :limit OFFSET :offset
     """, nativeQuery = true)
     List<Users> getUsersQuery(@Param("name") String name, @Param("offset") int offset, @Param("limit") int limit);

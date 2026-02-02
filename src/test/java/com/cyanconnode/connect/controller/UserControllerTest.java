@@ -57,7 +57,7 @@ public class UserControllerTest
     }
 
     @Test
-    public void searchUsers_withoutName_returnsBadRequest() throws Exception
+    public void getUsers_withoutName_returnsDefaultUsersList() throws Exception
     {
         mockMvc.perform(get("/api/v1/users")
                         .param("offset", "0")

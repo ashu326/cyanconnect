@@ -19,14 +19,6 @@ public class UserService
     {
         List<Users> users = userRepository.getUsersQuery(name, offset, limit);
 
-        if (users.isEmpty())
-        {
-            return ResponseEntity.ok(Map.of(
-                    "usersCount", 0,
-                    "users", List.of()
-            ));
-        }
-
         List<UserResponseDto> responseList = users.stream()
                 .map(user -> UserResponseDto.builder()
                         .id(user.getId())
@@ -37,9 +29,8 @@ public class UserService
                 .toList();
 
         return ResponseEntity.ok(Map.of(
-                "offset", offset,
-                "limit", limit,
-                "usersCount", userRepository.count(),
+                "usersCount", responseList.size(),
+                "totalUsers", userRepository.count(),
                 "users", responseList
         ));
     }
