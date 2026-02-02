@@ -6,7 +6,6 @@ import com.cyanconnode.connect.exception.ConflictException;
 import com.cyanconnode.connect.repository.ProjectsRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

@@ -1,5 +1,6 @@
 package com.cyanconnode.connect.repository;
 
+import com.cyanconnode.connect.entity.Projects;
 import com.cyanconnode.connect.entity.Users;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,15 @@ class UserRepositoryTest {
                 Optional.ofNullable(userRepository.findByUserName("saurabh123"));
 
         assertTrue(found.isPresent());
+    }
+
+    @Test
+    void findByProjectName_Should_Return_Empty_When_Not_Exists()
+    {
+
+        Optional<Users> result =
+                Optional.ofNullable(userRepository.findByUserName("UnknownUser"));
+
+        assertTrue(result.isEmpty());
     }
 }
