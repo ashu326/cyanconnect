@@ -3,21 +3,24 @@ package com.cyanconnode.connect.service;
 import com.cyanconnode.connect.dto.UserDto;
 import com.cyanconnode.connect.entity.Users;
 import com.cyanconnode.connect.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class UserService
 {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<String> createUser(UserDto userDto)
+    public ResponseEntity<String> createUser(@Valid UserDto userDto)
     {
 
         Optional<Users> existingUser = userRepository.getUserDetails(userDto.getEmail(),
