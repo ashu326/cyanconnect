@@ -18,7 +18,7 @@ public class SwaggerConfig
         return new OpenAPI()
                 .info(new Info()
                         .title("CyanConnect APIs")
-                        .description("User Related APIs")
+                        .description("APIs for the CyanConnect application. Currently, only Add User APIs are implemented.")
                         .version("1.0"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(
