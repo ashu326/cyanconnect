@@ -29,7 +29,6 @@ public class UserService
                 .toList();
 
         return ResponseEntity.ok(Map.of(
-                "usersCount", responseList.size(),
                 "totalUsers", userRepository.count(),
                 "users", responseList
         ));
