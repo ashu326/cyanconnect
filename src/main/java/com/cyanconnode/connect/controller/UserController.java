@@ -4,6 +4,7 @@ import com.cyanconnode.connect.dto.UserDto;
 import com.cyanconnode.connect.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +19,9 @@ public class UserController
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserDto userDto)
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserDto userDto)
     {
-        return userService.createUser(userDto);
+        userService.createUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

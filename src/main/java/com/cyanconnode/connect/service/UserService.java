@@ -6,7 +6,6 @@ import com.cyanconnode.connect.exception.ConflictException;
 import com.cyanconnode.connect.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +20,7 @@ public class UserService
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<String> createUser(@Valid UserDto userDto)
+    public void createUser(@Valid UserDto userDto)
     {
 
         Optional<Users> existingUser = userRepository.getUserDetails(userDto.getEmail(),
@@ -54,7 +53,5 @@ public class UserService
         userDetails.setPhoneNo(userDto.getPhoneNo());
         userDetails.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(userDetails);
-
-        return ResponseEntity.ok("User Details Save Successfully");
     }
 }
