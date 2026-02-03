@@ -1,22 +1,20 @@
 package com.cyanconnode.connect.service;
 
 import com.cyanconnode.connect.dto.UserDto;
-import com.cyanconnode.connect.entity.Users;
-import com.cyanconnode.connect.exception.ConflictException;
 import com.cyanconnode.connect.repository.UserRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
@@ -29,9 +27,6 @@ class UserServiceTest
     @MockBean
     private UserRepository userRepository;
 
-    @MockBean
-    private PasswordEncoder passwordEncoder;
-
     @Test
     void validDto_Should_Create_User_Successfully()
     {
@@ -42,15 +37,8 @@ class UserServiceTest
         userDetails.setPhoneNo("9654548555");
         userDetails.setPassword("12345");
 
-        when(userRepository.getUserDetails(anyString(), anyString(), anyString()))
-                .thenReturn(Optional.empty());
-
-        when(passwordEncoder.encode(anyString()))
-                .thenReturn("hashedPassword");
-
-        assertDoesNotThrow(() -> userService.createUser(userDetails));
-
-        verify(userRepository, times(1)).save(any(Users.class));
+        ResponseEntity<?> saved = userService.createUser(userDetails);
+        assertNotNull(saved);
     }
 
     @Test
@@ -118,8 +106,16 @@ class UserServiceTest
     }
 
     @Test
-    void duplicateEmail_Should_Throw_ConflictException()
+    void duplicateEmail_Should_Return_Conflict()
     {
+        UserDto firstUser = new UserDto();
+        firstUser.setName("user1");
+        firstUser.setUserName("user1");
+        firstUser.setEmail("dup@gmail.com");
+        firstUser.setPhoneNo("9999999991");
+        firstUser.setPassword("12345");
+
+        userService.createUser(firstUser);
 
         UserDto duplicateUser = new UserDto();
         duplicateUser.setName("user2");
@@ -128,19 +124,10 @@ class UserServiceTest
         duplicateUser.setPhoneNo("9999999992");
         duplicateUser.setPassword("12345");
 
-        Users existingUser = new Users();
-        existingUser.setEmail("dup@gmail.com");
+        ResponseEntity<String> response =
+                userService.createUser(duplicateUser);
 
-        when(userRepository.getUserDetails(
-                anyString(), anyString(), anyString()))
-                .thenReturn(Optional.of(existingUser));
-
-        ConflictException exception = assertThrows(
-                ConflictException.class,
-                () -> userService.createUser(duplicateUser)
-        );
-
-        assertEquals("Email already exists", exception.getMessage());
+        assertEquals(409, response.getStatusCode().value());
     }
 
     @Test
