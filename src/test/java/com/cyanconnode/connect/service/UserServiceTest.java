@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Map;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -23,8 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.times;
 
 
@@ -127,16 +132,8 @@ class UserServiceTest
     }
 
     @Test
-    void duplicateEmail_Should_Return_Conflict()
+    void duplicateEmail_Should_Throw_ConflictException()
     {
-        UserDto firstUser = new UserDto();
-        firstUser.setName("user1");
-        firstUser.setUserName("user1");
-        firstUser.setEmail("dup@gmail.com");
-        firstUser.setPhoneNo("9999999991");
-        firstUser.setPassword("12345");
-
-        userService.createUser(firstUser);
 
         UserDto duplicateUser = new UserDto();
         duplicateUser.setName("user2");
@@ -145,9 +142,12 @@ class UserServiceTest
         duplicateUser.setPhoneNo("9999999992");
         duplicateUser.setPassword("12345");
 
+        Users existingUser = new Users();
+        existingUser.setEmail("dup@gmail.com");
+
         when(userRepository.getUserDetails(
                 anyString(), anyString(), anyString()))
-                .thenReturn(Optional.of(new Users()));
+                .thenReturn(Optional.of(existingUser));
 
         ConflictException exception = assertThrows(
                 ConflictException.class,

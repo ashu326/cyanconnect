@@ -1,5 +1,6 @@
 package com.cyanconnode.connect.controller;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,27 +34,23 @@ class UserControllerTest
                                   "password":"test123"
                                 }
                                 """))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
     void missingEmail_Should_Return_BadRequest() throws Exception
     {
-        String unique = "user" + System.currentTimeMillis();
-        String uniqueEmail = unique + "@gmail.com";
-
         mockMvc.perform(post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-            {
-              "name":"user1",
-              "userName":"user1234",
-              "email":"user1@gmail.com",
-              "phoneNo":9652448555,
-              "password":"user1234"
-            }
-            """.formatted(unique, uniqueEmail)))
-                .andExpect(status().isOk());
+                            {
+                              "name":"user1",
+                              "userName":"user1234",
+                              "phoneNo":"9652448555",
+                              "password":"user1234"
+                            }
+                            """))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -122,6 +119,23 @@ class UserControllerTest
                         }
                         """))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void duplicateUser_Should_Return_Conflict() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "name":"test2",
+                                  "userName":"test1234",
+                                  "email":"test2@gmail.com",
+                                  "phoneNo":9652444555,
+                                  "password":"test123"
+                                }
+                                """))
+                .andExpect(status().isConflict());
     }
 
     @Test
