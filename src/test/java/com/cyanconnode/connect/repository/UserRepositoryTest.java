@@ -32,4 +32,14 @@ class UserRepositoryTest {
 
         assertTrue(found.isPresent());
     }
+
+    @Test
+    void findByProjectName_Should_Return_Empty_When_Not_Exists()
+    {
+
+        Optional<Users> result =
+                Optional.ofNullable(userRepository.findByUserName("UnknownUser"));
+
+        assertTrue(result.isEmpty());
+    }
 }
