@@ -1,8 +1,10 @@
 package com.cyanconnode.connect.service;
 
 import com.cyanconnode.connect.dto.ProjectsDto;
+import com.cyanconnode.connect.entity.Address;
 import com.cyanconnode.connect.entity.Projects;
 import com.cyanconnode.connect.exception.ConflictException;
+import com.cyanconnode.connect.repository.AddressRepository;
 import com.cyanconnode.connect.repository.ProjectsRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class ProjectsService
 {
     private final ProjectsRepository projectsRepository;
+    private final AddressRepository addressRepository;
 
     public void addProject(@Valid ProjectsDto projectsDto)
     {
@@ -23,9 +26,15 @@ public class ProjectsService
             throw new ConflictException("ProjectName already exists");
         }
 
+        Optional<Address> address = addressRepository.findById(projectsDto.getSiteAddressId());
+        if (!address.isPresent())
+        {
+            throw new ConflictException("Address not Found");
+        }
+
         Projects projectDetails = new Projects();
         projectDetails.setProjectName(projectsDto.getProjectName());
-        projectDetails.setSiteAddressId(projectsDto.getSiteAddressId());
+        projectDetails.setSiteAddress(address.get());
 
         projectsRepository.save(projectDetails);
     }

@@ -1,8 +1,10 @@
 package com.cyanconnode.connect.service;
 
 import com.cyanconnode.connect.dto.ProjectsDto;
+import com.cyanconnode.connect.entity.Address;
 import com.cyanconnode.connect.entity.Projects;
 import com.cyanconnode.connect.exception.ConflictException;
+import com.cyanconnode.connect.repository.AddressRepository;
 import com.cyanconnode.connect.repository.ProjectsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +29,28 @@ public class ProjectServiceTest
     @MockBean
     private ProjectsRepository projectsRepository;
 
+    @MockBean
+    private AddressRepository addressRepository;
+
     @Test
     void addProject_Should_Save_Project_When_ProjectName_Not_Exists()
     {
 
+        Address address = new Address();
+        address.setId(2L);
+        address.setAddressLine1("Test Address Line 2");
+        address.setCity("Delhi");
+        address.setState("Delhi");
+        address.setPinCode(110091);
+
         ProjectsDto dto = new ProjectsDto();
         dto.setProjectName("ProjectServiceA");
-        dto.setSiteAddressId("ADDRService1");
+        dto.setSiteAddressId(2L);
 
         when(projectsRepository.findByProjectName("ProjectServiceA"))
                 .thenReturn(Optional.empty());
+
+        when(addressRepository.findById(2L)).thenReturn(Optional.of(address));
 
         assertDoesNotThrow(() -> projectsService.addProject(dto));
 
@@ -47,9 +61,16 @@ public class ProjectServiceTest
     void addProject_Should_Throw_ConflictException_When_ProjectName_Exists()
     {
 
+        Address address = new Address();
+        address.setId(2L);
+        address.setAddressLine1("Test Address Line 2");
+        address.setCity("Delhi");
+        address.setState("Delhi");
+        address.setPinCode(110091);
+
         ProjectsDto dto = new ProjectsDto();
         dto.setProjectName("ProjectServiceA");
-        dto.setSiteAddressId("ADDRService1");
+        dto.setSiteAddressId(2L);
 
         Projects existingProject = new Projects();
         existingProject.setProjectName("ProjectServiceA");
@@ -70,10 +91,16 @@ public class ProjectServiceTest
     @Test
     void addProject_Should_Throw_RuntimeException_When_Save_Fails()
     {
+        Address address = new Address();
+        address.setId(2L);
+        address.setAddressLine1("Test Address Line 2");
+        address.setCity("Delhi");
+        address.setState("Delhi");
+        address.setPinCode(110091);
 
         ProjectsDto dto = new ProjectsDto();
         dto.setProjectName("ProjectA");
-        dto.setSiteAddressId("ADDR1");
+        dto.setSiteAddressId(2L);
 
         when(projectsRepository.findByProjectName("ProjectA"))
                 .thenReturn(Optional.empty());

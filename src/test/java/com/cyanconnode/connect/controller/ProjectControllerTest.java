@@ -25,7 +25,7 @@ public class ProjectControllerTest
                             .content("""
                 {
                   "projectName":"ProjectA",
-                  "siteAddressId":"ADDR1"
+                  "siteAddressId":1
                 }
                 """))
                     .andExpect(status().isCreated());
@@ -38,7 +38,7 @@ public class ProjectControllerTest
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
-                  "siteAddressId":"ADDR1"
+                  "siteAddressId":1
                 }
                 """))
                 .andExpect(status().isBadRequest());
@@ -65,7 +65,7 @@ public class ProjectControllerTest
                         .content("""
                 {
                   "projectName":"",
-                  "siteAddressId":"ADDR1"
+                  "siteAddressId":1
                 }
                 """))
                 .andExpect(status().isBadRequest());
@@ -78,8 +78,8 @@ public class ProjectControllerTest
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
-                  "projectName":"ProjectA",
-                  "siteAddressId":""
+                  "projectName":"ProjectB",
+                  "siteAddressId": null
                 }
                 """))
                 .andExpect(status().isBadRequest());
@@ -94,7 +94,7 @@ public class ProjectControllerTest
                         .content("""
                     {
                       "projectName":"ProjectA",
-                      "siteAddressId":"ADDR1"
+                      "siteAddressId":1
                     }
                     """))
                 .andExpect(status().isConflict());
