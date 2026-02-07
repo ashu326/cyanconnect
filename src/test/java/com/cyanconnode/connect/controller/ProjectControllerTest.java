@@ -25,7 +25,11 @@ public class ProjectControllerTest
                             .content("""
                 {
                   "projectName":"ProjectA",
-                  "siteAddressId":1
+                  "addressLine1": "Sector 52",
+                  "addressLine2": "Near Metro Station",
+                  "city": "New Delhi",
+                  "state": "Delhi",
+                  "pinCode": 110096
                 }
                 """))
                     .andExpect(status().isCreated());
@@ -38,7 +42,11 @@ public class ProjectControllerTest
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
-                  "siteAddressId":1
+                  "addressLine1": "Sector 52",
+                  "addressLine2": "Near Metro Station",
+                  "city": "New Delhi",
+                  "state": "Delhi",
+                  "pinCode": 110096
                 }
                 """))
                 .andExpect(status().isBadRequest());
@@ -65,7 +73,11 @@ public class ProjectControllerTest
                         .content("""
                 {
                   "projectName":"",
-                  "siteAddressId":1
+                  "addressLine1": "Sector 52",
+                  "addressLine2": "Near Metro Station",
+                  "city": "New Delhi",
+                  "state": "Delhi",
+                  "pinCode": 110096
                 }
                 """))
                 .andExpect(status().isBadRequest());
@@ -79,7 +91,11 @@ public class ProjectControllerTest
                         .content("""
                 {
                   "projectName":"ProjectB",
-                  "siteAddressId": null
+                  "addressLine1": "",
+                  "addressLine2": "",
+                  "city": "",
+                  "state": "",
+                  "pinCode": null
                 }
                 """))
                 .andExpect(status().isBadRequest());
@@ -94,7 +110,11 @@ public class ProjectControllerTest
                         .content("""
                     {
                       "projectName":"ProjectA",
-                      "siteAddressId":1
+                      "addressLine1": "Sector 52",
+                      "addressLine2": "Near Metro Station",
+                      "city": "New Delhi",
+                      "state": "Delhi",
+                      "pinCode": 110096
                     }
                     """))
                 .andExpect(status().isConflict());

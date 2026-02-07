@@ -36,24 +36,25 @@ public class ProjectServiceTest
     void addProject_Should_Save_Project_When_ProjectName_Not_Exists()
     {
 
-        Address address = new Address();
-        address.setId(2L);
-        address.setAddressLine1("Test Address Line 2");
-        address.setCity("Delhi");
-        address.setState("Delhi");
-        address.setPinCode(110091);
-
         ProjectsDto dto = new ProjectsDto();
         dto.setProjectName("ProjectServiceA");
-        dto.setSiteAddressId(2L);
+        dto.setAddressLine1("Line 1");
+        dto.setAddressLine2("Line 2");
+        dto.setCity("Delhi");
+        dto.setState("Delhi");
+        dto.setPinCode(110091);
 
-        when(projectsRepository.findByProjectName("ProjectServiceA"))
-                .thenReturn(Optional.empty());
+        when(projectsRepository.findByProjectName("ProjectServiceA")).thenReturn(Optional.empty());
 
-        when(addressRepository.findById(2L)).thenReturn(Optional.of(address));
+        when(addressRepository.save(any(Address.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        when(projectsRepository.save(any(Projects.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         assertDoesNotThrow(() -> projectsService.addProject(dto));
 
+        verify(addressRepository, times(1)).save(any(Address.class));
         verify(projectsRepository, times(1)).save(any(Projects.class));
     }
 
@@ -61,16 +62,13 @@ public class ProjectServiceTest
     void addProject_Should_Throw_ConflictException_When_ProjectName_Exists()
     {
 
-        Address address = new Address();
-        address.setId(2L);
-        address.setAddressLine1("Test Address Line 2");
-        address.setCity("Delhi");
-        address.setState("Delhi");
-        address.setPinCode(110091);
-
         ProjectsDto dto = new ProjectsDto();
         dto.setProjectName("ProjectServiceA");
-        dto.setSiteAddressId(2L);
+        dto.setAddressLine1("Line 1");
+        dto.setAddressLine2("Line 2");
+        dto.setCity("Delhi");
+        dto.setState("Delhi");
+        dto.setPinCode(110091);
 
         Projects existingProject = new Projects();
         existingProject.setProjectName("ProjectServiceA");
@@ -91,16 +89,13 @@ public class ProjectServiceTest
     @Test
     void addProject_Should_Throw_RuntimeException_When_Save_Fails()
     {
-        Address address = new Address();
-        address.setId(2L);
-        address.setAddressLine1("Test Address Line 2");
-        address.setCity("Delhi");
-        address.setState("Delhi");
-        address.setPinCode(110091);
-
         ProjectsDto dto = new ProjectsDto();
-        dto.setProjectName("ProjectA");
-        dto.setSiteAddressId(2L);
+        dto.setProjectName("ProjectServiceA");
+        dto.setAddressLine1("Line 1");
+        dto.setAddressLine2("Line 2");
+        dto.setCity("Delhi");
+        dto.setState("Delhi");
+        dto.setPinCode(110091);
 
         when(projectsRepository.findByProjectName("ProjectA"))
                 .thenReturn(Optional.empty());
