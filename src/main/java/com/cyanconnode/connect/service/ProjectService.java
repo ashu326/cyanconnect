@@ -17,9 +17,9 @@ import java.util.Map;
 public class ProjectService
 {
     private final ProjectRepository projectRepository;
-    public ResponseEntity<Object> getProjects(String name, int offset, int limit)
+    public ResponseEntity<Object> getProjects(String projectName, int offset, int limit)
     {
-        List<Projects> projects = projectRepository.getProjectsQuery(name, offset, limit);
+        List<Projects> projects = projectRepository.getProjectsQuery(projectName, offset, limit);
 
         List<ProjectResponseDto> responseList = projects.stream()
                 .map(project -> ProjectResponseDto.builder()

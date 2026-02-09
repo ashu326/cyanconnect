@@ -19,8 +19,8 @@ public class ProjectController
     @GetMapping
     public ResponseEntity<Object> getProjects(@RequestParam(defaultValue = "0") int offset,
                                            @RequestParam(defaultValue = "10") int limit,
-                                           @RequestParam(required = false) String name)
+                                           @RequestParam(required = false) String projectName)
     {
-        return projectService.getProjects(name, offset, limit);
+        return projectService.getProjects(projectName, offset, limit);
     }
 }

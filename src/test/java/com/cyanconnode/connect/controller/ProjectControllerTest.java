@@ -51,7 +51,7 @@ class ProjectControllerTest
     public void searchProjects_withName_returnsOk() throws Exception
     {
         mockMvc.perform(get("/api/v1/projects")
-                        .param("name", "project")
+                        .param("projectName", "project")
                         .param("offset", "0")
                         .param("limit", "5"))
                 .andExpect(status().isOk());
@@ -71,7 +71,7 @@ class ProjectControllerTest
     public void searchProjects_onlyNameParam() throws Exception
     {
         mockMvc.perform(get("/api/v1/projects")
-                        .param("name", "project"))
+                        .param("projectName", "project"))
                 .andExpect(status().isOk());
     }
 
@@ -79,7 +79,7 @@ class ProjectControllerTest
     public void searchProjects_withStringOffset_returnsBadRequest() throws Exception
     {
         mockMvc.perform(get("/api/v1/projects")
-                        .param("name", "project")
+                        .param("projectName", "project")
                         .param("offset", "abc")
                         .param("limit", "5"))
                 .andExpect(status().isBadRequest());
@@ -89,7 +89,7 @@ class ProjectControllerTest
     public void searchProjects_noMatchingUsers_returnsOkWithEmptyList() throws Exception
     {
         mockMvc.perform(get("/api/v1/projects")
-                        .param("name", "zzzzzz")
+                        .param("projectName", "zzzzzz")
                         .param("offset", "0")
                         .param("limit", "5"))
                 .andExpect(status().isOk());
