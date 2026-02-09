@@ -53,7 +53,7 @@ public class ProjectControllerTest
     }
 
     @Test
-    void missingSiteAddressId_Should_Return_BadRequest() throws Exception
+    void missingSiteAddress_Should_Return_BadRequest() throws Exception
     {
         mockMvc.perform(post("/api/v1/projects")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,7 +84,7 @@ public class ProjectControllerTest
     }
 
     @Test
-    void blankSiteAddressId_Should_Return_BadRequest() throws Exception
+    void blankSiteAddress_Should_Return_BadRequest() throws Exception
     {
         mockMvc.perform(post("/api/v1/projects")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -207,6 +207,77 @@ public class ProjectControllerTest
               "pinCode": 123
             }
             """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void stringPinCode_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+        {
+          "projectName":"ProjectH",
+          "addressLine1": "Sector 52",
+          "addressLine2": "Near Metro",
+          "city": "New Delhi",
+          "state": "Delhi",
+          "pinCode": "ABC123"
+        }
+        """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void invalidCityString_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+        {
+          "projectName":"ProjectI",
+          "addressLine1": "Sector 52",
+          "addressLine2": "Near Metro",
+          "city": "Delhi123",
+          "state": "Delhi",
+          "pinCode": 110096
+        }
+        """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void invalidStateString_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+        {
+          "projectName":"ProjectJ",
+          "addressLine1": "Sector 52",
+          "addressLine2": "Near Metro",
+          "city": "New Delhi",
+          "state": "@@@@",
+          "pinCode": 110096
+        }
+        """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void invalidAddressLine1_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+        {
+          "projectName":"ProjectK",
+          "addressLine1": "@@",
+          "city": "New Delhi",
+          "state": "Delhi",
+          "pinCode": 110096
+        }
+        """))
                 .andExpect(status().isBadRequest());
     }
 }
