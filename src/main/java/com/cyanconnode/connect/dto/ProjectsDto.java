@@ -1,6 +1,11 @@
 package com.cyanconnode.connect.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 import lombok.Data;
 
 @Data
@@ -11,8 +16,10 @@ public class ProjectsDto
 
     @NotBlank(message = "Address Line 1 cannot be blank")
     @Size(min = 3, message = "Invalid address")
+    @Pattern(regexp = "^[A-Za-z0-9][A-Za-z0-9\\s,.-/#]{2,99}$", message = "Invalid address")
     private String addressLine1;
 
+    @Pattern(regexp = "^[A-Za-z0-9][A-Za-z0-9\\s,.-/#]{2,99}$", message = "Invalid address")
     private String addressLine2;
 
     @NotBlank(message = "City cannot be blank")

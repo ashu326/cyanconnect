@@ -29,16 +29,16 @@ public class ProjectsService
         }
 
         Address address = new Address();
-        address.setAddressLine1(projectsDto.getAddressLine1());
-        address.setAddressLine2(projectsDto.getAddressLine2());
-        address.setCity(projectsDto.getCity());
-        address.setState(projectsDto.getState());
+        address.setAddressLine1(projectsDto.getAddressLine1().toLowerCase());
+        address.setAddressLine2(projectsDto.getAddressLine2().toLowerCase());
+        address.setCity(projectsDto.getCity().toLowerCase());
+        address.setState(projectsDto.getState().toLowerCase());
         address.setPinCode(projectsDto.getPinCode());
 
         Address savedAddress = addressRepository.save(address);
 
         Projects projectDetails = new Projects();
-        projectDetails.setProjectName(projectsDto.getProjectName());
+        projectDetails.setProjectName(projectsDto.getProjectName().toLowerCase());
         projectDetails.setSiteAddress(savedAddress);
 
         projectsRepository.save(projectDetails);
