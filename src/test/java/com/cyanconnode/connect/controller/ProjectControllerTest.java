@@ -119,4 +119,94 @@ public class ProjectControllerTest
                     """))
                 .andExpect(status().isConflict());
     }
+
+    @Test
+    void blankAddressLine1_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+            {
+              "projectName":"ProjectC",
+              "addressLine1": "",
+              "addressLine2": "Near Metro",
+              "city": "New Delhi",
+              "state": "Delhi",
+              "pinCode": 110096
+            }
+            """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void blankCity_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+            {
+              "projectName":"ProjectD",
+              "addressLine1": "Sector 52",
+              "addressLine2": "Near Metro",
+              "city": "",
+              "state": "Delhi",
+              "pinCode": 110096
+            }
+            """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void blankState_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+            {
+              "projectName":"ProjectE",
+              "addressLine1": "Sector 52",
+              "addressLine2": "Near Metro",
+              "city": "New Delhi",
+              "state": "",
+              "pinCode": 110096
+            }
+            """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void nullPinCode_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+            {
+              "projectName":"ProjectF",
+              "addressLine1": "Sector 52",
+              "addressLine2": "Near Metro",
+              "city": "New Delhi",
+              "state": "Delhi",
+              "pinCode": null
+            }
+            """))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void invalidPinCode_Should_Return_BadRequest() throws Exception
+    {
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+            {
+              "projectName":"ProjectG",
+              "addressLine1": "Sector 52",
+              "addressLine2": "Near Metro",
+              "city": "New Delhi",
+              "state": "Delhi",
+              "pinCode": 123
+            }
+            """))
+                .andExpect(status().isBadRequest());
+    }
 }
