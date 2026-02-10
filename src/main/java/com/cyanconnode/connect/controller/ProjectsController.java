@@ -1,6 +1,6 @@
 package com.cyanconnode.connect.controller;
 
-import com.cyanconnode.connect.service.ProjectService;
+import com.cyanconnode.connect.service.ProjectsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/projects")
 @RequiredArgsConstructor
-public class ProjectController
+public class ProjectsController
 {
-    private final ProjectService projectService;
+    private final ProjectsService projectsService;
 
     @GetMapping
     public ResponseEntity<Object> getProjects(@RequestParam(defaultValue = "0") int offset,
                                            @RequestParam(defaultValue = "10") int limit,
                                            @RequestParam(required = false) String projectName)
     {
-        return projectService.getProjects(projectName, offset, limit);
+        return projectsService.getProjects(projectName, offset, limit);
     }
 }

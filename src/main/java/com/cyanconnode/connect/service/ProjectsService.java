@@ -1,7 +1,7 @@
 package com.cyanconnode.connect.service;
 
 import com.cyanconnode.connect.dto.ProjectResponseDto;
-import com.cyanconnode.connect.repository.ProjectRepository;
+import com.cyanconnode.connect.repository.ProjectsRepository;
 import com.cyanconnode.connect.entity.Projects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +14,19 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Validated
-public class ProjectService
+public class ProjectsService
 {
-    private final ProjectRepository projectRepository;
+    private final ProjectsRepository projectsRepository;
     public ResponseEntity<Object> getProjects(String projectName, int offset, int limit)
     {
         List<Projects> projects;
         if (projectName != null && !projectName.isBlank())
         {
-            projects = projectRepository.getProjectsQuery(projectName, offset, limit);
+            projects = projectsRepository.getProjectsQuery(projectName, offset, limit);
         }
         else
         {
-            var page = projectRepository.findAll(
+            var page = projectsRepository.findAll(
                     org.springframework.data.domain.PageRequest.of(
                             offset / limit,
                             limit,
@@ -45,7 +45,7 @@ public class ProjectService
                 .toList();
 
         return ResponseEntity.ok(Map.of(
-                "totalProjects", projectRepository.count(),
+                "totalProjects", projectsRepository.count(),
                 "projects", responseList
         ));
     }

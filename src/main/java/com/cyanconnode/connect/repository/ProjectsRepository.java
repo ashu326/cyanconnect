@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Projects, Long>
+public interface ProjectsRepository extends JpaRepository<Projects, Long>
 {
     //Get All Projects
     @Query(value = """

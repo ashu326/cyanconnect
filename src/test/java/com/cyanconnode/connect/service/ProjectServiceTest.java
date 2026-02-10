@@ -1,6 +1,6 @@
 package com.cyanconnode.connect.service;
 
-import com.cyanconnode.connect.repository.ProjectRepository;
+import com.cyanconnode.connect.repository.ProjectsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,16 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ProjectServiceTest
 {
     @Autowired
-    private ProjectService projectService;
+    private ProjectsService projectsService;
 
     @MockBean
-    private ProjectRepository projectRepository;
+    private ProjectsRepository projectsRepository;
 
     @Test
     public void getProjects_Using_Offset_And_Limit()
     {
 
-        ResponseEntity<?> response = projectService.getProjects("", 0, 10);
+        ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
     }
@@ -35,7 +35,7 @@ public class ProjectServiceTest
     @Test
     public void getProjects_ShouldReturnUserList_WhenProjectsExist()
     {
-        ResponseEntity<?> response = projectService.getProjects("", 0, 10);
+        ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
         assertEquals(200, response.getStatusCodeValue());
         assertInstanceOf(Map.class, response.getBody());
         Map<?, ?> body = (Map<?, ?>) response.getBody();
@@ -45,7 +45,7 @@ public class ProjectServiceTest
     @Test
     public void getProjects_ShouldReturnMessage_WhenNoProjectsExist()
     {
-        ResponseEntity<?> response = projectService.getProjects("", 0, 10);
+        ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
         assertEquals(200, response.getStatusCodeValue());
     }
 }
