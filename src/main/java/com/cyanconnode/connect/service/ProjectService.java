@@ -19,7 +19,22 @@ public class ProjectService
     private final ProjectRepository projectRepository;
     public ResponseEntity<Object> getProjects(String projectName, int offset, int limit)
     {
-        List<Projects> projects = projectRepository.getProjectsQuery(projectName, offset, limit);
+        List<Projects> projects;
+        if (projectName != null && !projectName.isBlank())
+        {
+            projects = projectRepository.getProjectsQuery(projectName, offset, limit);
+        }
+        else
+        {
+            var page = projectRepository.findAll(
+                    org.springframework.data.domain.PageRequest.of(
+                            offset / limit,
+                            limit,
+                            org.springframework.data.domain.Sort.by("projectName")
+                    )
+            );
+            projects = page.getContent();
+        }
 
         List<ProjectResponseDto> responseList = projects.stream()
                 .map(project -> ProjectResponseDto.builder()
