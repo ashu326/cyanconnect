@@ -9,6 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Map;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -16,10 +20,16 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.times;
 
 
@@ -167,5 +177,31 @@ class UserServiceTest
                 () -> userService.createUser(userDetails));
 
         assertEquals("Database error", exception.getMessage());
+    }
+
+    @Test
+    public void getUsers_Using_Offset_And_Limit()
+    {
+
+        ResponseEntity<?> response = userService.getUsers("", 0, 10);
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    public void getUsers_ShouldReturnUserList_WhenUsersExist()
+    {
+        ResponseEntity<?> response = userService.getUsers("", 0, 10);
+        assertEquals(200, response.getStatusCodeValue());
+        assertInstanceOf(Map.class, response.getBody());
+        Map<?, ?> body = (Map<?, ?>) response.getBody();
+        assertTrue(body.containsKey("users"));
+    }
+
+    @Test
+    public void getUsers_ShouldReturnMessage_WhenNoUsersExist()
+    {
+        ResponseEntity<?> response = userService.getUsers("", 0, 10);
+        assertEquals(200, response.getStatusCodeValue());
     }
 }

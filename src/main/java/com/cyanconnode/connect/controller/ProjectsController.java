@@ -1,13 +1,14 @@
 package com.cyanconnode.connect.controller;
 
+import com.cyanconnode.connect.dto.ProjectsDto;
 import com.cyanconnode.connect.service.ProjectsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("api/v1/projects")
@@ -22,5 +23,12 @@ public class ProjectsController
                                            @RequestParam(required = false) String projectName)
     {
         return projectsService.getProjects(projectName, offset, limit);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addProject(@Valid @RequestBody ProjectsDto projectsDto)
+    {
+        projectsService.addProject(projectsDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

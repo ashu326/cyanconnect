@@ -1,6 +1,5 @@
 package com.cyanconnode.connect.config;
 
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -18,7 +17,7 @@ public class SwaggerConfig
         return new OpenAPI()
                 .info(new Info()
                         .title("CyanConnect APIs")
-                        .description("APIs for the CyanConnect application. Currently, only Add User APIs are implemented.")
+                        .description("APIs for the CyanConnect application. Currently, Add User and Add Project APIs are implemented.")
                         .version("1.0"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(

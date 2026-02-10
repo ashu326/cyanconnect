@@ -6,12 +6,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.List;
 
 
 @Repository
 public interface ProjectsRepository extends JpaRepository<Projects, Long>
 {
+    Optional<Projects> findByProjectName(String projectName);
+
     //Get All Projects
     @Query(value = """
 SELECT * FROM projects
