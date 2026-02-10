@@ -66,6 +66,7 @@ public class UserService
                         .id(user.getUserId())
                         .name(user.getName())
                         .email(user.getEmail())
+                        .phoneNo(user.getPhoneNo())
                         .username(user.getUserName())
                         .build())
                 .toList();
