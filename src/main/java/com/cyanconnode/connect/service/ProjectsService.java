@@ -67,12 +67,21 @@ public class ProjectsService
             projects = page.getContent();
         }
 
-        List<ProjectResponseDto> responseList = projects.stream()
-                .map(project -> ProjectResponseDto.builder()
-                        .id(project.getId())
-                        .projectName(project.getProjectName())
-                        .siteAddressId(String.valueOf(project.getSiteAddress()))
-                        .build())
+        List<ProjectResponseDto> responseList = projects.stream().map(project ->
+                {
+                    var address = project.getSiteAddress();
+
+                    return ProjectResponseDto.builder()
+                            .id(project.getId())
+                            .projectName(project.getProjectName())
+                            .siteAddressId(address != null ? String.valueOf(address.getId()) : null)
+                            .addressLine1(address != null ? address.getAddressLine1() : null)
+                            .addressLine2(address != null ? address.getAddressLine2() : null)
+                            .city(address != null ? address.getCity() : null)
+                            .state(address != null ? address.getState() : null)
+                            .pinCode(address != null ? address.getPinCode() : 0)
+                            .build();
+                })
                 .toList();
 
         return ResponseEntity.ok(Map.of(

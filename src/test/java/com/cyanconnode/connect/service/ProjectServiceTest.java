@@ -10,8 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -113,7 +116,9 @@ public class ProjectServiceTest
     @Test
     public void getProjects_Using_Offset_And_Limit()
     {
-
+        when(projectsRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+        when(projectsRepository.count()).thenReturn(0L);
         ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
@@ -122,6 +127,9 @@ public class ProjectServiceTest
     @Test
     public void getProjects_ShouldReturnUserList_WhenProjectsExist()
     {
+        when(projectsRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+        when(projectsRepository.count()).thenReturn(0L);
         ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
         assertEquals(200, response.getStatusCodeValue());
         assertInstanceOf(Map.class, response.getBody());
@@ -132,6 +140,9 @@ public class ProjectServiceTest
     @Test
     public void getProjects_ShouldReturnMessage_WhenNoProjectsExist()
     {
+        when(projectsRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+        when(projectsRepository.count()).thenReturn(0L);
         ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
         assertEquals(200, response.getStatusCodeValue());
     }
