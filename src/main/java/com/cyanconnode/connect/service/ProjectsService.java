@@ -74,12 +74,12 @@ public class ProjectsService
                     return ProjectResponseDto.builder()
                             .id(project.getId())
                             .projectName(project.getProjectName())
-                            .siteAddressId(address != null ? String.valueOf(address.getId()) : null)
-                            .addressLine1(address != null ? address.getAddressLine1() : null)
-                            .addressLine2(address != null ? address.getAddressLine2() : null)
-                            .city(address != null ? address.getCity() : null)
-                            .state(address != null ? address.getState() : null)
-                            .pinCode(address != null ? address.getPinCode() : 0)
+                            .siteAddressId(String.valueOf(address.getId()))
+                            .addressLine1(address.getAddressLine1())
+                            .addressLine2(address.getAddressLine2())
+                            .city(address.getCity())
+                            .state(address.getState())
+                            .pinCode(address.getPinCode())
                             .build();
                 })
                 .toList();
