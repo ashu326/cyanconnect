@@ -10,10 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -105,5 +112,38 @@ public class ProjectServiceTest
 
         assertThrows(RuntimeException.class,
                 () -> projectsService.addProject(dto));
+    }
+    @Test
+    public void getProjects_Using_Offset_And_Limit()
+    {
+        when(projectsRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+        when(projectsRepository.count()).thenReturn(0L);
+        ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    public void getProjects_ShouldReturnUserList_WhenProjectsExist()
+    {
+        when(projectsRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+        when(projectsRepository.count()).thenReturn(0L);
+        ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
+        assertEquals(200, response.getStatusCodeValue());
+        assertInstanceOf(Map.class, response.getBody());
+        Map<?, ?> body = (Map<?, ?>) response.getBody();
+        assertTrue(body.containsKey("projects"));
+    }
+
+    @Test
+    public void getProjects_ShouldReturnMessage_WhenNoProjectsExist()
+    {
+        when(projectsRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+        when(projectsRepository.count()).thenReturn(0L);
+        ResponseEntity<?> response = projectsService.getProjects("", 0, 10);
+        assertEquals(200, response.getStatusCodeValue());
     }
 }

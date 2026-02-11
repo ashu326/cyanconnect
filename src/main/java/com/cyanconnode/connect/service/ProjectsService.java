@@ -1,5 +1,6 @@
 package com.cyanconnode.connect.service;
 
+import com.cyanconnode.connect.dto.ProjectResponseDto;
 import com.cyanconnode.connect.dto.ProjectsDto;
 import com.cyanconnode.connect.entity.Address;
 import com.cyanconnode.connect.entity.Projects;
@@ -9,7 +10,11 @@ import com.cyanconnode.connect.repository.ProjectsRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -42,5 +47,46 @@ public class ProjectsService
         projectDetails.setSiteAddress(savedAddress);
 
         projectsRepository.save(projectDetails);
+    }
+    public ResponseEntity<Object> getProjects(String projectName, int offset, int limit)
+    {
+        List<Projects> projects;
+        if (projectName != null && !projectName.isBlank())
+        {
+            projects = projectsRepository.getProjectsQuery(projectName, offset, limit);
+        }
+        else
+        {
+            var page = projectsRepository.findAll(
+                    org.springframework.data.domain.PageRequest.of(
+                            offset / limit,
+                            limit,
+                            org.springframework.data.domain.Sort.by("projectName")
+                    )
+            );
+            projects = page.getContent();
+        }
+
+        List<ProjectResponseDto> responseList = projects.stream().map(project ->
+                {
+                    var address = project.getSiteAddress();
+
+                    return ProjectResponseDto.builder()
+                            .id(project.getId())
+                            .projectName(project.getProjectName())
+                            .siteAddressId(String.valueOf(address.getId()))
+                            .addressLine1(address.getAddressLine1())
+                            .addressLine2(address.getAddressLine2())
+                            .city(address.getCity())
+                            .state(address.getState())
+                            .pinCode(address.getPinCode())
+                            .build();
+                })
+                .toList();
+
+        return ResponseEntity.ok(Map.of(
+                "totalProjects", projectsRepository.count(),
+                "projects", responseList
+        ));
     }
 }

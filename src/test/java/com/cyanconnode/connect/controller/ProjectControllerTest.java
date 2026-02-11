@@ -6,6 +6,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,13 +18,13 @@ public class ProjectControllerTest
     @Autowired
     private MockMvc mockMvc;
 
-        @Test
-        void addProject_Should_Return_201_When_Valid_Request() throws Exception
-        {
+    @Test
+    void addProject_Should_Return_201_When_Valid_Request() throws Exception
+    {
 
-            mockMvc.perform(post("/api/v1/projects")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content("""
+        mockMvc.perform(post("/api/v1/projects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
                 {
                   "projectName":"ProjectA",
                   "addressLine1": "Sector 52",
@@ -32,7 +34,7 @@ public class ProjectControllerTest
                   "pinCode": 110096
                 }
                 """))
-                    .andExpect(status().isCreated());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -279,5 +281,82 @@ public class ProjectControllerTest
         }
         """))
                 .andExpect(status().isBadRequest());
+    }
+    @Test
+    public void getProjects_Using_Offset_And_Limit() throws Exception
+    {
+        mockMvc.perform(
+                        get("/api/v1/projects")
+                                .param("offset", "0")
+                                .param("limit", "10")
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getProjects_withStringOffset_returnsBadRequest() throws Exception
+    {
+        mockMvc.perform(
+                        get("/api/v1/projects")
+                                .param("offset", "abc")
+                                .param("limit", "10")
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void getProjects_withoutAnyParams_usesDefaultValues() throws Exception {
+        mockMvc.perform(get("/api/v1/projects"))
+                .andExpect(status().isOk());
+    }
+
+
+    //Get Project By Name Test
+    @Test
+    public void searchProjects_withName_returnsOk() throws Exception
+    {
+        mockMvc.perform(get("/api/v1/projects")
+                        .param("projectName", "project")
+                        .param("offset", "0")
+                        .param("limit", "5"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getProjects_withoutName_returnsDefaultUsersList() throws Exception
+    {
+        mockMvc.perform(get("/api/v1/projects")
+                        .param("offset", "0")
+                        .param("limit", "5"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void searchProjects_onlyNameParam() throws Exception
+    {
+        mockMvc.perform(get("/api/v1/projects")
+                        .param("projectName", "project"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void searchProjects_withStringOffset_returnsBadRequest() throws Exception
+    {
+        mockMvc.perform(get("/api/v1/projects")
+                        .param("projectName", "project")
+                        .param("offset", "abc")
+                        .param("limit", "5"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void searchProjects_noMatchingUsers_returnsOkWithEmptyList() throws Exception
+    {
+        mockMvc.perform(get("/api/v1/projects")
+                        .param("projectName", "zzzzzz")
+                        .param("offset", "0")
+                        .param("limit", "5"))
+                .andExpect(status().isOk());
     }
 }
