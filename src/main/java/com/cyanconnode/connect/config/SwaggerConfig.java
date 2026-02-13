@@ -17,7 +17,17 @@ public class SwaggerConfig
         return new OpenAPI()
                 .info(new Info()
                         .title("CyanConnect APIs")
-                        .description("APIs for the CyanConnect application. Currently, Add User and Add Project APIs are implemented.")
+                        .description("This API documentation provides details of all available endpoints \n" +
+                                "for the CyanConnect backend application.\n" +
+                                "\n" +
+                                "Currently implemented modules:\n" +
+                                "- User Management (Add User, Authentication/Login)\n" +
+                                "- Project Management (Add Project)\n" +
+                                "\n" +
+                                "Authentication is handled using JWT-based security.\n" +
+                                "All secured endpoints require a valid Bearer token.\n" +
+                                "\n" +
+                                "Environment: Development")
                         .version("1.0"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(
