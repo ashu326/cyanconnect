@@ -34,4 +34,5 @@ public interface UserRepository extends JpaRepository<Users, Long>
     """, nativeQuery = true)
     List<Users> getUsersQuery(@Param("name") String name, @Param("offset") int offset, @Param("limit") int limit);
 
+    Users findByEmail(String email);
 }
