@@ -1,6 +1,6 @@
 package com.cyanconnode.connect.filters;
 
-import com.cyanconnode.connect.utiliities.JwtUtil;
+import com.cyanconnode.connect.utilities.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

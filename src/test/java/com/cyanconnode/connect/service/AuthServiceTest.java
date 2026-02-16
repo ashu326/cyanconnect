@@ -4,7 +4,7 @@ import com.cyanconnode.connect.dto.LoginRequestDto;
 import com.cyanconnode.connect.dto.LoginResponseDto;
 import com.cyanconnode.connect.entity.Users;
 import com.cyanconnode.connect.repository.UserRepository;
-import com.cyanconnode.connect.utiliities.JwtUtil;
+import com.cyanconnode.connect.utilities.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

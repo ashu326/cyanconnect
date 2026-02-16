@@ -1,4 +1,4 @@
-package com.cyanconnode.connect.utiliities;
+package com.cyanconnode.connect.utilities;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
