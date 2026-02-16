@@ -12,13 +12,16 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
 
+import static com.cyanconnode.connect.constants.ConnectConstants.JWT_EXPIRATION;
+import static com.cyanconnode.connect.constants.ConnectConstants.JWT_SECRET;
+
 @Component
 public class JwtUtil
 {
-    @Value("${jwt.secret}")
+    @Value(JWT_SECRET)
     private String secret;
 
-    @Value("${jwt.expiration}")
+    @Value(JWT_EXPIRATION)
     private long jwtExpiration;
 
     private SecretKey key;
