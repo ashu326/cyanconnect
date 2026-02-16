@@ -14,7 +14,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.mock;
@@ -61,9 +60,9 @@ public class AuthServiceTest
                 .thenReturn("dummy-jwt-token");
 
         LoginResponseDto response = authService.loginUser(loginRequest);
+        LoginResponseDto expected = new LoginResponseDto("dummy-jwt-token");
 
-        assertNotNull(response);
-        assertEquals("dummy-jwt-token", response.getToken());
+        assertEquals(expected, response);
 
         verify(jwtUtil).generateToken(anyMap(), eq("test@gmail.com"));
 

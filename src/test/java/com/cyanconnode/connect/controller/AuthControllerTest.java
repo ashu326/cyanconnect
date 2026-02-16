@@ -22,7 +22,7 @@ public class AuthControllerTest
     @Test
     void loginUser_Should_Return_Token_When_Valid_Credentials() throws Exception
     {
-        mockMvc.perform(post("/auth-login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
@@ -38,7 +38,7 @@ public class AuthControllerTest
     @Test
     void missingEmail_Should_Return_BadRequest() throws Exception
     {
-        mockMvc.perform(post("/auth-login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
@@ -51,7 +51,7 @@ public class AuthControllerTest
     @Test
     void missingPassword_Should_Return_BadRequest() throws Exception
     {
-        mockMvc.perform(post("/auth-login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
@@ -64,7 +64,7 @@ public class AuthControllerTest
     @Test
     void loginUser_Should_Return_BadRequest_When_Email_Is_Null() throws Exception
     {
-        mockMvc.perform(post("/auth-login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
@@ -78,7 +78,7 @@ public class AuthControllerTest
     @Test
     void loginUser_Should_Return_BadRequest_When_Password_Is_Null() throws Exception
     {
-        mockMvc.perform(post("/auth-login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
@@ -90,23 +90,23 @@ public class AuthControllerTest
     }
 
     @Test
-    void invalidEmail_Should_Return_Unauthorized() throws Exception
+    void invalidEmail_Should_Return_BadRequest() throws Exception
     {
-        mockMvc.perform(post("/auth-login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
-                  "email":"tests@gmail.com",
+                  "email":"testgmail.com",
                   "password": "12345"
                 }
                 """))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     void invalidPassword_Should_Return_Unauthorized() throws Exception
     {
-        mockMvc.perform(post("/auth-login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                 {
