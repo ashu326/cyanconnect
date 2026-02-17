@@ -27,7 +27,7 @@ public class AuthService
     private final UserRepository userRepository;
 
     @Transactional
-    public LoginResponseDto loginUser(@Valid LoginRequestDto loginRequestDto)
+    public LoginResponseDto authUser(@Valid LoginRequestDto loginRequestDto)
     {
         Users user = userRepository.findByEmail(loginRequestDto.getEmail());
 

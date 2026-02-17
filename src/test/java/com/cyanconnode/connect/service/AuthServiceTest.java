@@ -59,7 +59,7 @@ public class AuthServiceTest
         when(jwtUtil.generateToken(anyMap(), eq("test@gmail.com")))
                 .thenReturn("dummy-jwt-token");
 
-        LoginResponseDto response = authService.loginUser(loginRequest);
+        LoginResponseDto response = authService.authUser(loginRequest);
         LoginResponseDto expected = new LoginResponseDto("dummy-jwt-token");
 
         assertEquals(expected, response);
@@ -79,7 +79,7 @@ public class AuthServiceTest
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 BadCredentialsException.class,
-                () -> authService.loginUser(loginRequest)
+                () -> authService.authUser(loginRequest)
         );
 
         verify(authenticationManager, never()).authenticate(any());
@@ -103,7 +103,7 @@ public class AuthServiceTest
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 BadCredentialsException.class,
-                () -> authService.loginUser(loginRequest)
+                () -> authService.authUser(loginRequest)
         );
 
         verify(jwtUtil, never()).generateToken(anyMap(), anyString());
@@ -130,7 +130,7 @@ public class AuthServiceTest
 
         org.junit.jupiter.api.Assertions.assertThrows(
                 BadCredentialsException.class,
-                () -> authService.loginUser(loginRequest)
+                () -> authService.authUser(loginRequest)
         );
 
         verify(jwtUtil, never()).generateToken(anyMap(), anyString());
