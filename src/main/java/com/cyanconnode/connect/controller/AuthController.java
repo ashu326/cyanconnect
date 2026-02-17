@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController
 {
 
-    private final AuthService loginService;
+    private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto)
+    public ResponseEntity<LoginResponseDto> authUser(@Valid @RequestBody LoginRequestDto loginRequestDto)
     {
-       return ResponseEntity.ok(loginService.loginUser(loginRequestDto));
+       return ResponseEntity.ok(authService.authUser(loginRequestDto));
     }
 }
 

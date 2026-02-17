@@ -7,6 +7,7 @@ import com.cyanconnode.connect.repository.UserRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.times;
 
 
 @SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 class UserServiceTest
 {
 
