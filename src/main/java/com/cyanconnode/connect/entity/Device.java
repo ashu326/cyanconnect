@@ -1,10 +1,6 @@
 package com.cyanconnode.connect.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -51,4 +47,12 @@ public class Device
 
     @Column(name = "altitude")
     private int altitude;
+
+    @OneToOne
+    @JoinColumn(name = "project_id")
+    private Projects projectId;
+
+    @OneToOne
+    @JoinColumn(name = "dlms_key_id")
+    private Keys dlmsKeyId;
 }

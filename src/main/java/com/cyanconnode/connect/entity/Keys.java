@@ -1,14 +1,9 @@
 package com.cyanconnode.connect.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "api_keys")
+@Table(name = "dlms_keys")
 public class Keys
 {
     @Id
@@ -16,8 +11,9 @@ public class Keys
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "type")
-    private String type;
+    @OneToOne
+    @JoinColumn(name = "project_id")
+    private Projects projectId;
 
     @Column(name = "key_name", columnDefinition = "VARBINARY(512)")
     private byte[] keyName;
